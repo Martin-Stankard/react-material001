@@ -8,11 +8,7 @@ import MenuItem from "material-ui/MenuItem";
 import ImageResults from "../ImageResults/ImageResults";
 
 export default class Search extends Component {
-  constructor(){
-      super();
-     
-  }
-  
+    
     state = {
     searchText: "",
     amount: 5,
