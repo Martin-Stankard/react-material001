@@ -54,28 +54,46 @@ export default class Search extends Component {
   }
 
   onTextChange = e => {
+    const val = e.target.value;
+
     //generic to the control, with same name in state
-    this.setState({ [e.target.name]: e.target.value },() => {
-        axios
-          .get(
-            `${this.state.apiUrl}/?key=${this.state.apiKey}&q=
-            ${this.state.searchText}&image_type=photo&per_page=${this.state.amount}&safesearch=true`
-          )
-          .then(res => this.setState({ images: res.data.hits }))
-          .catch(err => console.log(err));
+    this.setState({ [e.target.name]: val },() => {
+
+        if(val===""){
+            this.setState({images:[]})
+        }else{
+            axios
+            .get(
+              `${this.state.apiUrl}/?key=${this.state.apiKey}&q=
+              ${this.state.searchText}&image_type=photo&per_page=${this.state.amount}&safesearch=true`
+            )
+            .then(res => this.setState({ images: res.data.hits }))
+            .catch(err => console.log(err));
+        }
+
+  
       });
    
   };
 
   onAmountChange = (e, index, value) => {
     this.setState({ amount: value },() => {
-        axios
-          .get(
-            `${this.state.apiUrl}/?key=${this.state.apiKey}&q=
-            ${this.state.searchText}&image_type=photo&per_page=${this.state.amount}&safesearch=true`
-          )
-          .then(res => this.setState({ images: res.data.hits }))
-          .catch(err => console.log(err));
+
+        if(this.state.searchText===""){
+            this.setState({images:[]})
+        }else{
+            //so much repeating code, but SelectField.onChange + 
+            //React state do not behave predictably
+            axios
+            .get(
+              `${this.state.apiUrl}/?key=${this.state.apiKey}&q=
+              ${this.state.searchText}&image_type=photo&per_page=${this.state.amount}&safesearch=true`
+            )
+            .then(res => this.setState({ images: res.data.hits }))
+            .catch(err => console.log(err));
+        }
+
+   
       });
 
   };
